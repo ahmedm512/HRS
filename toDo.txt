@@ -1,0 +1,50 @@
+///Hotel Reservation System///
+
+The project is divided into 3 main sections which are described below.
+
+
+
+***
+GUI
+***
+----------------------------------------------
+Requirements:
+1- User friendly Style
+3- 
+TO BE DONE:-
+1-
+2-
+3-
+
+DONE:-
+
+********
+DATABASE
+********
+Requirements:
+1- Hotel Database - 2 py files [1- CREATION OF DATABASE AND CREATING TABLES, 2- DATABASE HANDLING WITH QUERIES AND COMMANDS]
+2- Functions to be called on the gui for dealing with the database
+TO BE DONE:-
+1-
+2-
+3-
+
+DONE:-
+
+
+*******
+BACKEND
+*******
+Requirements:
+1- 
+2- 
+TO BE DONE:-
+1- Functions to deal with the sqllite server, functions done[insertDB, showTable, dropTable, searchByID]
+2-
+3-
+
+DONE:-
+
+UPDATES>>
+*PRINT CHECK
+*BOOKING API

@@ -1,0 +1,18 @@
+***
+GUI
+***
+1-PyQt5 or Tkinter is more applicable in our project?
+
+
+********
+DATABASE
+********
+1- Mysql Or Sqllite is applicable in our project?
+Ans: Sqllite (Till Now) reasons; The main reasons is the portability ability where the db is stored in the file disk
+'file.db' and doesnt require any servers to be launched before fetching/updating the database, faster to access and connecting
+with small projects 'data' ofcourse less secure but we dont care because it is operated locally
+
+
+*******
+BACKEND
+*******
