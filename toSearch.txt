@@ -2,6 +2,7 @@
 GUI
 ***
 1-PyQt5 or Tkinter is more applicable in our project?
+  Ans: PyQt5 is better in our project, It is easier to build and user friendly. In addition, it is based on classes.
 
 
 ********
@@ -16,3 +17,4 @@ with small projects 'data' ofcourse less secure but we dont care because it is o
 *******
 BACKEND
 *******
+1- Search for Booking and Expedia APIs (Messaging, Modify Prices, more...).
