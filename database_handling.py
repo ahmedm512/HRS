@@ -31,6 +31,18 @@ def showTable(tableName):
         print(f'[EXCEPTION] FAILED TO SELECT {tableName}')
 
 
+def showRoom(roomNo):
+    '''
+    :param roomNo: Number of the room
+    :return: RoomNo  row in rooms TABLE >>contents
+    '''
+    try:
+        c.execute(f'SELECT * FROM rooms WHERE Room_Number = {roomNo}')
+        return print(c.fetchall())
+    except:
+        print(f'[EXCEPTION] FAILED TO SELECT {roomNo} FROM ROOMS TABLE')
+
+
 def dropTable(tableName):
     '''
     :param: tableName
@@ -65,15 +77,15 @@ def is_available(roomNo):
     try:
         c.execute(f'SELECT state FROM rooms WHERE Room_Number = {roomNo}')
         output = c.fetchall()
-        if output[0][0] is None or c.fetchall()[0][0] == 0:
-            return (True, roomNo)
+        if output[0][0] is None or output[0][0] == 0:
+            return (True, roomNo, 'Free')
         elif output[0][0] == 1:
-            return (False, roomNo)
+            return (False, roomNo, 'NotFree')
         elif output[0][0] == 2:
             print(f'Room {roomNo} is Under Maintenance')
-            return (False, roomNo)
+            return (False, roomNo, 'Under Maintenance')
     except:
-        return False
+        return (False,roomNo)
 
 
 def modifyRoom(roomNo, guestName, checkIn, checkOut, GuestID, state, price):
@@ -93,6 +105,18 @@ def modifyRoom(roomNo, guestName, checkIn, checkOut, GuestID, state, price):
         print(f'[EXCEPTION] SOMETHING WENT WRONG')
         print(Exception.message)
 
+
+def maintenanceModifier(roomNo, state):
+    try:
+        c.execute(f'''UPDATE rooms
+        SET State = {state}
+        WHERE
+        Room_Number = {roomNo}''')
+        conn.commit()
+    except:
+        print(f'[EXCEPTION] SOMETHING WENT WRONG MAINTENANCE MODIFIER')
+        print(Exception.message)
+
 def accommodationCalculation(roomNo, checkOutDate=None):
     try:
         c.execute(f'''SELECT Check_In_Date, Check_Out, PRICE FROM rooms WHERE Room_Number = {roomNo}''')
@@ -110,6 +134,8 @@ def accommodationCalculation(roomNo, checkOutDate=None):
         return acc_cost, date_objIn.date(), date_objOut.date(), num_nights
     except:
         return 'Error in dateHandling' + Exception.message
+
+
 
 
 

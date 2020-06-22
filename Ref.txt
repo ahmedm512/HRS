@@ -1,0 +1,10 @@
+1) Booking API
+	1- https://connect.booking.com/user_guide/site/en-US/res/
+*Note* 
+	We recommend periodically calling the API — every minute,
+	for example — to retrieve a list of recently created, modified,
+	or cancelled reservations. You can do this with either the B.XML or OTA endpoint.
+	
+	[Booking API Python Implementation]
+	2- https://rapidapi.com/blog/booking-com-api-python/
+	3- https://www.youtube.com/watch?v=pxofwuWTs7c
