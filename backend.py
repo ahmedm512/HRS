@@ -13,12 +13,40 @@ import database_handling
     PRICE INT
 '''
 
+'''CREATE TABLE reservations(
+         Reservation_Number INT PRIMARY KEY,
+         Room_Number INT,
+         Guest_Name TEXT,
+         Check_In_Date BLOB,
+         Check_Out BLOB,
+         Guest_ID INT,
+         PRICE INT
+         )'''
+def reservation(roomNo, guestName, checkIn, checkOut, GuestID, price):
+    Reservation_Number = str(roomNo) + checkIn[-2:] + str(GuestID)[:4]
+    try:
+        if database_handling.is_reserved(roomNo, checkIn, checkOut)[0]:
+            database_handling.insertDB('reservation', "({}, {}, '{}', '{}', '{}', {}, {})".format(Reservation_Number, roomNo, guestName, checkIn, checkOut, GuestID, price))
+        else:
+            print('Room is already reserved in same date')
+    except:
+        print('Error in reservation')
 
-def reservations(roomNo, guestName, checkIn, price, GuestID, checkOut='null', state=1):
+def cancel_reservation(Reservation_Number):
+    return database_handling.rem_reserved(Reservation_Number)
+
+def check_reservation(room=None):
+    if room is None:
+        return database_handling.showTable('reservation')
+    else:
+        return database_handling.search_by('reservation', 'Room_Number', room)
+
+def checkin(roomNo, guestName, checkIn, price, GuestID, checkOut='null', state=1):
     try:
 
         if not database_handling.is_available(roomNo)[0]:
-            return f'The Room is Occupied'
+            print(f'The Room is Occupied')
+            return False
         database_handling.modifyRoom(roomNo, guestName, checkIn, checkOut, GuestID, state, price)
         return f'Room {roomNo} is reserved'
     except:
@@ -60,7 +88,7 @@ def maintenance(roomNo, main=0):   # 0: set maintenance, 1: set maintenance free
         else:
             if main == 0: # Set maintenance
                 database_handling.maintenanceModifier(roomNo, state=2)
-                print('ROOM IS SET TO UNDER MAINTENANCE')
+                print(f'ROOM {roomNo} IS SET TO UNDER MAINTENANCE')
     if main==1:
         database_handling.maintenanceModifier(roomNo, state='null')
-        print(f'ROOM{roomNo} IS SET TO FREE')
+        print(f'ROOM {roomNo} IS SET TO FREE')

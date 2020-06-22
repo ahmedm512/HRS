@@ -17,6 +17,25 @@ try:
 except:
     print('TABLE ALREADY EXIST')
 
+
+
+
+try:
+    c.execute('''CREATE TABLE reservation(
+         Reservation_Number INT PRIMARY KEY,
+         Room_Number INT,
+         Guest_Name BLOB,
+         Check_In_Date BLOB,
+         Check_Out BLOB,
+         Guest_ID INT,
+         PRICE INT
+         )''')
+    print('TABLE reservation CREATED')
+except:
+    print('TABLE ALREADY EXIST')
+
+
+
 ## CREATION OF 30 ROOMS
 def create5():
     for i in range(1,6):

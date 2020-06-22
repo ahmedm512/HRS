@@ -6,6 +6,14 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+#------------------IMPORTS----------------------------------------#
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import QDate, Qt
+import backend
+import database_handling
+
 #-----------------------Reservation Variables---------------------#
 global room_no
 global guest_name
@@ -14,9 +22,6 @@ global check_out
 global guest_id
 global price
 #-----------------------------------------------------------------#
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import QDate, Qt
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -146,6 +151,7 @@ class Ui_MainWindow(object):
             #self.roomNo.setText("")
             if not(0 < room_no < 30):
                 self.show_popup('Room Number Does not exist', 'w')
+            print(room_no)
 
             guest_name = self.guestName.text()
             if not(guest_name):
@@ -169,6 +175,11 @@ class Ui_MainWindow(object):
             if not (price):
                 self.show_popup('Please Enter Price', 'w')
 
+            if backend.checkin(room_no, guest_name, check_in, price, guest_id, check_out):
+                # History table to be added
+                self.show_popup(f'Room {room_no} is Reserved', 'i')
+            else:
+                self.show_popup('Room is already reserved OR something went wrong', 'c')
         except:
             self.show_popup('Please Enter a Valid Input', 'w')
 
@@ -188,6 +199,8 @@ class Ui_MainWindow(object):
             msg.setIcon(QMessageBox.Information)
         elif icon == 'w':
             msg.setIcon(QMessageBox.Warning)
+        elif icon == 'c':
+            msg.setIcon(QMessageBox.Critical)
         x = msg.exec_()
 
 
