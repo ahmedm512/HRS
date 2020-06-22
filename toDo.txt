@@ -12,11 +12,13 @@ Requirements:
 1- User friendly Style
 3- 
 TO BE DONE:-
-1-
-2-
-3-
+1- Reservation Page
+2- Availability Table
+3- Check Out Page
+4- Room Page
 
 DONE:-
+1- Reservation Page
 
 ********
 DATABASE
