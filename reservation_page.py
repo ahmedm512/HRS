@@ -6,14 +6,22 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-
+#-----------------------Reservation Variables---------------------#
+global room_no
+global guest_name
+global check_in
+global check_out
+global guest_id
+global price
+#-----------------------------------------------------------------#
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtCore import QDate, Qt
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 515)
+        MainWindow.resize(745, 529)
         MainWindow.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -41,19 +49,13 @@ class Ui_MainWindow(object):
         self.roomNo.setPlaceholderText("")
         self.roomNo.setObjectName("roomNo")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.roomNo)
-        self.guistName = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.guistName.setText("")
-        self.guistName.setObjectName("guistName")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.guistName)
-        self.checkIn = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.checkIn.setObjectName("checkIn")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.checkIn)
-        self.checkOut = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.checkOut.setObjectName("checkOut")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.checkOut)
-        self.guistId = QtWidgets.QLineEdit(self.formLayoutWidget)
-        self.guistId.setObjectName("guistId")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.guistId)
+        self.guestName = QtWidgets.QLineEdit(self.formLayoutWidget)
+        self.guestName.setText("")
+        self.guestName.setObjectName("guestName")
+        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.guestName)
+        self.guestId = QtWidgets.QLineEdit(self.formLayoutWidget)
+        self.guestId.setObjectName("guestId")
+        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.guestId)
         self.checkOut_label = QtWidgets.QLabel(self.formLayoutWidget)
         self.checkOut_label.setObjectName("checkOut_label")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.LabelRole, self.checkOut_label)
@@ -65,6 +67,21 @@ class Ui_MainWindow(object):
         self.price.setText("")
         self.price.setObjectName("price")
         self.formLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.price)
+        self.checkIn = QtWidgets.QDateEdit(self.formLayoutWidget)
+        self.checkIn.setWrapping(False)
+        self.checkIn.setReadOnly(False)
+        self.checkIn.setSpecialValueText("")
+        self.checkIn.setAccelerated(False)
+        self.checkIn.setMinimumDate(QDate.currentDate())
+        self.checkIn.setCalendarPopup(True)
+        self.checkIn.setObjectName("checkIn")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.checkIn)
+        self.checkOut = QtWidgets.QDateEdit(self.formLayoutWidget)
+        self.checkOut.setDisplayFormat("dd/MM/yyyy")
+        self.checkOut.setMinimumDate(QDate.currentDate().addDays(+1))
+        self.checkOut.setCalendarPopup(True)
+        self.checkOut.setObjectName("checkOut")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.checkOut)
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(190, 370, 331, 80))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
@@ -81,7 +98,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.cancel)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 745, 26))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -97,6 +114,12 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionCAlender)
         self.menubar.addAction(self.menuFile.menuAction())
 
+    #-----------------Connections-------------------------#
+        self.makeReservation.clicked.connect(self.reservationClicked)
+        self.cancel.clicked.connect(self.cancelClicked)
+
+    #-----------------------------------------------------#
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -109,11 +132,63 @@ class Ui_MainWindow(object):
         self.guistId_label.setText(_translate("MainWindow", "Guist ID"))
         self.checkOut_label.setText(_translate("MainWindow", "Check Out"))
         self.price_label.setText(_translate("MainWindow", "Price"))
+        self.checkIn.setDisplayFormat(_translate("MainWindow", "d/M/yyyy"))
         self.makeReservation.setText(_translate("MainWindow", "Make Reservation"))
         self.cancel.setText(_translate("MainWindow", "Cancel"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionSave.setText(_translate("MainWindow", "Make Reservation"))
         self.actionCAlender.setText(_translate("MainWindow", "Reserved Table"))
+
+
+    def reservationClicked(self):
+        try:
+            room_no = int(self.roomNo.text())
+            #self.roomNo.setText("")
+            if not(0 < room_no < 30):
+                self.show_popup('Room Number Does not exist', 'w')
+
+            guest_name = self.guestName.text()
+            if not(guest_name):
+                self.show_popup('Please Enter Guest Name', 'w')
+            #self.guestName.setText("")
+            print(guest_name)
+
+            check_in = self.checkIn.date().toPyDate()
+            print(check_in)
+
+            check_out = self.checkOut.date().toPyDate()
+            print(check_out)
+
+            guest_id = int(self.guestId.text())
+            print(guest_id)
+            if not (guest_id):
+                self.show_popup('Please Enter Guest ID', 'w')
+
+            price = int(self.price.text())
+            print(price)
+            if not (price):
+                self.show_popup('Please Enter Price', 'w')
+
+        except:
+            self.show_popup('Please Enter a Valid Input', 'w')
+
+
+
+    def cancelClicked(self):
+        self.roomNo.setText("")
+        self.guestName.setText("")
+        self.price.setText("")
+        self.guestId.setText("")
+
+    def show_popup(self, error_message, icon):
+        msg = QMessageBox()
+        msg.setWindowTitle("Message Box")
+        msg.setText(error_message)
+        if icon == 'i':
+            msg.setIcon(QMessageBox.Information)
+        elif icon == 'w':
+            msg.setIcon(QMessageBox.Warning)
+        x = msg.exec_()
 
 
 if __name__ == "__main__":
